@@ -15,9 +15,17 @@ h2, h1 {
 
 .button-container {
     margin-top: 20px;
+    text-align: center;
 }
 
-.login-button, .signup-button {
+.login-signup-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.login-button, .signup-button, .continue-button {
+    flex-grow: 1;
     padding: 10px 20px;
     background-color: #007BFF; /* Blue color, you can change it */
     color: white;
@@ -28,6 +36,6 @@ h2, h1 {
     margin: 5px;
 }
 
-.login-button:hover, .signup-button:hover {
+.login-button:hover, .signup-button:hover, .continue-button:hover {
     background-color: #0056b3; /* Darker blue on hover, you can change it */
 }
