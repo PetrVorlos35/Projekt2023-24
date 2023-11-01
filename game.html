@@ -18,8 +18,8 @@
   
   
   <div class="game text-center p-2 position-relative top-50">
-    <input type="text" class="form-control w-25 m-auto m-2" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-    <button class="btn btn-success m-3">Submit</button>
+    <input type="text" id="guess" oninput="getInput()" class="form-control w-25 m-auto m-2" placeholder="Guess" aria-describedby="addon-wrapping">
+    <button class="btn btn-success m-3" onclick="fetchPlayers()">Submit</button>
     <div class="guesses">
       
     </div>
