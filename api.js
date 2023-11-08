@@ -12,7 +12,6 @@ function getInput() {
 
 function fetchPlayers() {
 
-    // nameToFind = userinput.value;
     
   var apiUrl = `https://www.balldontlie.io/api/v1/players?search=${nameToFind}&page=${page}&per_page=${pageSize}`;
 
@@ -43,5 +42,3 @@ function fetchPlayers() {
       console.error('Error:', error);
     });
 }
-
-// fetchPlayers();
