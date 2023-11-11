@@ -2,12 +2,13 @@
 var nameToFind = "";
 const pageSize = 25;
 let page = 1;
-const foundPlayers = [];
+let foundPlayers = [];
 
 function getInput() {
     var userinput = document.getElementById("guess").value;
-    nameToFind = userinput
-    console.log(nameToFind);
+    foundPlayers = [];
+    page = 1;
+    nameToFind = userinput; 
 }
 
 function fetchPlayers() {
