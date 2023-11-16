@@ -11,35 +11,59 @@ function getInput() {
     nameToFind = userinput; 
 }
 
-function fetchPlayers() {
 
-    
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fetchPlayers() {
   var apiUrl = `https://www.balldontlie.io/api/v1/players?search=${nameToFind}&page=${page}&per_page=${pageSize}`;
 
-  axios.get(apiUrl)
-    .then(response => {
-      if (response.status === 200) {
-        const players = response.data.data;
+  try {
+    const response = await axios.get(apiUrl);
+    if (response.status === 200) {
+      const players = response.data.data;
 
-        if (players.length > 0) {
-          foundPlayers.push(...players);
-          if (players.length === pageSize) {
-            page++;
-            fetchPlayers();
+      if (players.length > 0) {
+        const playerPromises = players.map(async (player) => {
+          const averagesResponse = await axios.get(`https://www.balldontlie.io/api/v1/season_averages?season=2023&player_ids[]=${player.id}`);
+
+          if (averagesResponse.status === 200) {
+            const playerAverages = averagesResponse.data.data;
+
+            if (playerAverages.length > 0) {
+              const playerWithAverages = {
+                player: player,
+                averages: playerAverages
+              };
+
+              foundPlayers.push(playerWithAverages);
+            }
           } else {
-            foundPlayers.forEach(player => {
-              console.log(player);
-            });
+            console.log(`Failed to retrieve season averages. Status code: ${averagesResponse.status}`);
           }
+
+          await delay(500);
+        });
+
+        await Promise.all(playerPromises);
+
+        if (players.length === pageSize) {
+          page++;
+          await fetchPlayers();
         } else {
-          console.log('No more players found.');
-          page = 1;
+          foundPlayers.forEach(player => {
+            console.log(player);
+          });
         }
       } else {
-        console.log(`Failed to retrieve player data. Status code: ${response.status}`);
+        console.log('No more players found.');
+        page = 1;
       }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    } else {
+      console.log(`Failed to retrieve player data. Status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
