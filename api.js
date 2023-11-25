@@ -11,6 +11,20 @@ function getInput() {
     nameToFind = userinput; 
 }
 
+function generateRndPlayer() {
+  
+}
+
+function getRandomLetter() {
+  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+  var randomIndex = Math.floor(Math.random() * alphabet.length);
+
+  var randomLetter = alphabet.charAt(randomIndex);
+
+  return randomLetter;
+}
+
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -43,7 +57,7 @@ async function fetchPlayers() {
             console.log(`Failed to retrieve season averages. Status code: ${averagesResponse.status}`);
           }
 
-          await delay(500);
+          await delay(1000);
         });
 
         await Promise.all(playerPromises);
