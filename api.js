@@ -11,19 +11,31 @@ function getInput() {
     nameToFind = userinput; 
 }
 
+generateRndPlayer();
+
 function generateRndPlayer() {
-  
+  const playersApiUrl = "https://www.balldontlie.io/api/v1/players";
+
+axios.get(playersApiUrl)
+  .then(response => {
+    if (response.data && Array.isArray(response.data.data)) {
+      const players = response.data.data;
+
+      if (players.length > 0) {
+        const randomPlayer = players[Math.floor(Math.random() * players.length)];
+        console.log("Randomly selected player:", randomPlayer);
+      } else {
+        console.log("No player data found.");
+      }
+    } else {
+      console.log("Invalid response format. Check the API response structure.");
+    }
+  })
+  .catch(error => console.error("Error fetching player data:", error));
+
 }
 
-function getRandomLetter() {
-  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-  var randomIndex = Math.floor(Math.random() * alphabet.length);
-
-  var randomLetter = alphabet.charAt(randomIndex);
-
-  return randomLetter;
-}
 
 
 function delay(ms) {
