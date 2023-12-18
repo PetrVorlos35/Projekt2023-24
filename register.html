@@ -18,5 +18,16 @@
 
         <input type="submit" value="Register">
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function(){
+          // Check if the 'registered' query parameter is true
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.get('registered') === 'true') {
+            alert('Registration successful!');
+          }
+        });
+      </script>
+      
 </body>
 </html>

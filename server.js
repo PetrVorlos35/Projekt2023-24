@@ -35,18 +35,19 @@ app.get('/', (req, res) => {
 app.post('/process', (req, res) => {
   const { username, password } = req.body;
 
-  // Insert data into the database
   const sql = 'INSERT INTO Uzivatele (Username, Heslo) VALUES (?, ?)';
   db.query(sql, [username, password], (err, result) => {
       if (err) throw err;
       console.log('User registered successfully');
-      res.send('User registered successfully');
+      res.redirect('/?registered=true'); // Redirect with query parameter
   });
 });
 
-app.get('/success', (req, res) => {
-  res.sendFile(__dirname + '/register.html');
-});
+  
+  // Serve the registration process page
+  app.get('/process', (req, res) => {
+    res.sendFile(__dirname + '/process.html');
+  });
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
