@@ -43,6 +43,31 @@ app.post('/process', (req, res) => {
   });
 });
 
+// Handle login form submission
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // Query to check if the user exists and the password is correct
+  const sql = 'SELECT * FROM Uzivatele WHERE Username = ? AND Heslo = ?';
+  db.query(sql, [username, password], (err, results) => {
+    if (err) throw err;
+
+    // Check if user exists
+    if (results.length > 0) {
+      console.log('Login successful');
+      // Handle login success (e.g., redirect to a dashboard)
+      res.redirect('/dashboard');
+    } else {
+      console.log('Incorrect Username and/or Password!');
+      res.send('Incorrect Username and/or Password!');
+    }
+  });
+});
+
+app.get('/dashboard', (req, res) => {
+  res.send('Welcome to your dashboard!');
+});
+
   
   // Serve the registration process page
   app.get('/process', (req, res) => {

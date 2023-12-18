@@ -19,6 +19,18 @@
         <input type="submit" value="Register">
     </form>
 
+    <h2>Login Form</h2>
+<form action="/login" method="post">
+    <label for="loginUsername">Username:</label>
+    <input type="text" name="username" required><br>
+
+    <label for="loginPassword">Password:</label>
+    <input type="password" name="password" required><br>
+
+    <input type="submit" value="Login">
+</form>
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function(){
           // Check if the 'registered' query parameter is true
