@@ -1,52 +1,53 @@
 const express = require('express');
 const mysql = require('mysql');
-const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 5500;
+const port = 3000;
 
-const connection = mysql.createConnection({
+// MySQL database connection
+const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'projekt3'
+  database: 'projekt3', // Change this to your database name
 });
 
-connection.connect(error => {
-  if (error) throw error;
-  console.log("Úspěšně připojeno k databázi.");
-});
-
-app.use(bodyParser.json());
-app.use(express.static('public')); // Složka, kde budou vaše HTML a JS soubory
-
-app.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  
-  if (!username || !password) {
-    return res.status(400).json({ message: 'Username a heslo jsou povinné.' });
+db.connect((err) => {
+  if (err) {
+    console.error('Database connection failed: ' + err.stack);
+    return;
   }
-  
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const query = 'INSERT INTO Uzivatele (Username, Heslo, DatumRegistrace) VALUES (?, ?, CURRENT_TIMESTAMP)';
-    connection.query(query, [username, hashedPassword], (error, results) => {
-      if (error) {
-        return res.status(500).json({ message: 'Chyba serveru při registraci uživatele.' });
-      }
-      res.status(201).json({ message: 'Uživatel byl úspěšně registrován.' });
-    });
-  } catch (error) {
-    res.status(500).json({ message: 'Chyba serveru při hashování hesla.' });
-  }
+  console.log('Connected to the database');
 });
 
-app.post('/login', async (req, res) => {
+// Middleware to parse form data
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// ... (previous code)
+
+// Serve the registration form
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/register.html');
+});
+
+// Handle form submission
+app.post('/process', (req, res) => {
   const { username, password } = req.body;
-  // Logika pro přihlášení (ověření uživatele v databázi)
+
+  // Insert data into the database
+  const sql = 'INSERT INTO Uzivatele (Username, Heslo) VALUES (?, ?)';
+  db.query(sql, [username, password], (err, result) => {
+      if (err) throw err;
+      console.log('User registered successfully');
+      res.send('User registered successfully');
+  });
+});
+
+app.get('/success', (req, res) => {
+  res.sendFile(__dirname + '/register.html');
 });
 
 app.listen(port, () => {
-  console.log(`Server běží na portu ${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });
