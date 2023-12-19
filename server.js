@@ -56,7 +56,7 @@ app.post('/login', (req, res) => {
     if (results.length > 0) {
       console.log('Login successful');
       // Handle login success (e.g., redirect to a dashboard)
-      res.redirect('/index.html');
+      res.redirect('/game.html');
     } else {
       console.log('Incorrect Username and/or Password!');
       res.send('Incorrect Username and/or Password!');
