@@ -56,7 +56,7 @@ app.post('/login', (req, res) => {
     if (results.length > 0) {
       console.log('Login successful');
       // Handle login success (e.g., redirect to a dashboard)
-      res.redirect('/dashboard');
+      res.redirect('/index.html');
     } else {
       console.log('Incorrect Username and/or Password!');
       res.send('Incorrect Username and/or Password!');
@@ -64,9 +64,11 @@ app.post('/login', (req, res) => {
   });
 });
 
-app.get('/dashboard', (req, res) => {
-  res.send('Welcome to your dashboard!');
-});
+app.use(express.static('public'));
+
+// app.get('/dashboard', (req, res) => {
+//   res.send('Welcome to your dashboard!');
+// });
 
   
   // Serve the registration process page
