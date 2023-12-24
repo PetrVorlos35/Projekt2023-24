@@ -39,7 +39,8 @@ app.post('/process', (req, res) => {
   db.query(sql, [username, password], (err, result) => {
       if (err) throw err;
       console.log('User registered successfully');
-      res.redirect('/?registered=true'); // Redirect with query parameter
+      // res.redirect('/?registered=true'); // Redirect with query parameter
+      res.redirect('/register.html'); // Redirect with query parameter
   });
 });
 
